@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const express = require('express');
 const cors = require('cors');
 //const authRoutes = require('./routes/authRoutes');
@@ -10,9 +9,13 @@ const app = express();
 app.use(cors()); // Permite que o React (Front-end) acesse essa API
 app.use(express.json()); // Habilita o Express a ler corpos de requisições em formato JSON
 
+//Importando as rotas de cada branch
+const usarioRoutes = require('./routes/usuarioRoutes');
+const authRoutes = require('./routes/authRoutes');
+
 // Vinculando as rotas aos caminhos da API
-//app.use('/api/auth', authRoutes);
-//app.use('/api', usuarioRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api', usuarioRoutes);
 
 // Rota de teste inicial para verificar se a API está online
 app.get('/api/teste', (req, res) => {
