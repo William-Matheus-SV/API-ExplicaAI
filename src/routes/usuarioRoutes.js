@@ -1,4 +1,8 @@
-const express = require("express");
+// att
+// teste 2
+//kkkjj
+
+const express = require("express");//teste
 
 const router = express.Router();
 
@@ -7,3 +11,4 @@ const usuarioController = require("../controllers/usuarioController");
 router.post("/usuarios", usuarioController.cadastrarUsuario);
 
 module.exports = router;
+
