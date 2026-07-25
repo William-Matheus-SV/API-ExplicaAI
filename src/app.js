@@ -1,17 +1,17 @@
 const express = require('express');
 const cors = require('cors');
-//const authRoutes = require('./routes/authRoutes');
-//const usuarioRoutes = require('./routes/usuarioRoutes');
+const conectarBanco = require("./config/db"); // importei a minha conexão com o banco
+const authRoutes = require('./routes/authRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
 
 const app = express();
+conectarBanco(); // importei a conexão
 
 // Middlewares Globais vitais para o projeto
 app.use(cors()); // Permite que o React (Front-end) acesse essa API
 app.use(express.json()); // Habilita o Express a ler corpos de requisições em formato JSON
 
-//Importando as rotas de cada branch
-const usarioRoutes = require('./routes/usuarioRoutes');
-const authRoutes = require('./routes/authRoutes');
+const MONGO_URI= "mongodb://127.0.0.1:27017/explicaai" // adicionei a rota para rodar o banco locamente
 
 // Vinculando as rotas aos caminhos da API
 app.use('/api/auth', authRoutes);
