@@ -3,6 +3,7 @@ const cors = require('cors');
 const conectarBanco = require("./config/db"); // importei a minha conexão com o banco
 const authRoutes = require('./routes/authRoutes');
 const usuarioRoutes = require('./routes/usuarioRoutes');
+const tutorRoutes = require("./routes/tutorRoutes");
 
 const app = express();
 conectarBanco(); // importei a conexão
@@ -16,6 +17,7 @@ const MONGO_URI= "mongodb://127.0.0.1:27017/explicaai" // adicionei a rota para 
 // Vinculando as rotas aos caminhos da API
 app.use('/api/auth', authRoutes);
 app.use('/api', usuarioRoutes);
+app.use("/api", tutorRoutes);
 
 // Rota de teste inicial para verificar se a API está online
 app.get('/api/teste', (req, res) => {
