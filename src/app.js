@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -10,10 +12,10 @@ app.use(cors()); // Permite que o React (Front-end) acesse essa API
 app.use(express.json()); // Habilita o Express a ler corpos de requisições em formato JSON
 
 //Conexão com o MongoDB Atlas
-//const MONGO_URI = "mongodb+srv://williammatheus7765_db_user:tmL1HRIlYqZ4ZooN@explicaai.zkdlvx7.mongodb.net/?appName=ExplicaAi";
+//const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://williammatheus7765_db_user:tmL1HRIlYqZ4ZooN@explicaai.zkdlvx7.mongodb.net/?appName=ExplicaAi";
 
 //Conexão com MongoDB Local
-const MONGO_URI = "mongodb://localhost:27017/explicaai";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/explicaai";
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log("Conectado ao MongoDB Atlas com sucesso!"))
