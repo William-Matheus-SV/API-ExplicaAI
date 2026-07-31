@@ -13,3 +13,5 @@ router.get("/tutores", tutorController.listarTutores);
 router.get("/tutores/:matricula", tutorController.buscarTutor);
 
 module.exports = router;
+
+// rotas conectadas com o banco local, então quando for usar certifique-se de usar o banco LOCAL!

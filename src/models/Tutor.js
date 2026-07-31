@@ -46,3 +46,5 @@ const tutorSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Tutor", tutorSchema);
+
+// aqui eu criei um arquivo para receber e armazenar todas as informações do tutor, e já subi para a main!

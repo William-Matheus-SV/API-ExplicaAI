@@ -96,3 +96,5 @@ module.exports = {
     listarTutores,
     buscarTutor
 };
+
+// adicionei o "tutorController.js" na main!
