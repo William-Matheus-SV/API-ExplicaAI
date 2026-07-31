@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 
 const app = express();
+conectarBanco(); // importei a conexão
 
 // Middlewares Globais vitais para o projeto
 app.use(cors()); // Permite que o React (Front-end) acesse essa API
@@ -28,6 +29,7 @@ const authRoutes = require('./routes/authRoutes');
 // Vinculando as rotas aos caminhos da API
 app.use('/api/auth', authRoutes);
 app.use('/api', usuarioRoutes);
+app.use("/api", tutorRoutes);
 
 // Rota de teste inicial para verificar se a API está online
 app.get('/api/teste', (req, res) => {
