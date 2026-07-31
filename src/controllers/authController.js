@@ -4,10 +4,10 @@ const jwt = require("jsonwebtoken");
 
 const loginUsuario = async (req, res) => {
     try{
-        const {email, senha} = req.body;
+        const {matricula, senha} = req.body;
         
         // Verifica se o usuário existe no banco de dados
-        const usuario = await Usuario.findOne({email});
+        const usuario = await Usuario.findOne({matricula});
         if(!usuario){
             return res.status(404).json({message: "Usuário não encontrado"});
         }
@@ -18,7 +18,7 @@ const loginUsuario = async (req, res) => {
             return res.status(401).json({message: "Senha incorreta"});
         }
         const token = jwt.sign(
-            {id: usuario._id, email: usuario.email},
+            {id: usuario._id, matricula: usuario.matricula},
              process.env.JWT_SECRET,{expiresIn: "1h"}
             );
 
