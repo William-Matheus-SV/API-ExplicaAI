@@ -38,6 +38,10 @@ const tutorSchema = new mongoose.Schema({
         },
         horario: {
             type: String
+        },
+        isDisponivel: {
+            type: Boolean,
+            default: false
         }
     }]
 
