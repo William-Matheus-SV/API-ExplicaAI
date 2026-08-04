@@ -45,7 +45,7 @@ app.get('/api/teste', (req, res) => {
 });
 
 // Configuração da porta
-const PORT = 3000;
+const PORT =  process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando liso na porta ${PORT}`);
 });
