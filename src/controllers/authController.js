@@ -1,4 +1,6 @@
 const Usuario = require("../models/Usuario");
+const Tutor = require("../models/Tutor");
+//const Admin = require("../models/Admin"); parte de Luís
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
