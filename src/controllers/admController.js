@@ -1,31 +1,63 @@
-const adm = require("../models/Adm");
+const Adm = require("../models/Adm");
 
-const loginAdm = (req, res) => {
-    const { email, senha } = req.body;
+// Cadastrar ADM
+const cadastrarAdm = async (req, res) => {
 
-    if (email === adm.email && senha === adm.senha) {
-        return res.status(200).json({
-            mensagem: "Login de administrador realizado com sucesso!",
-            administrador: {
-                nome: adm.nome,
-                email: adm.email
-            }
+    try {
+
+        const {
+            nome,
+            email,
+            senha
+        } = req.body;
+
+        const novoAdm = new Adm({
+            nome,
+            email,
+            senha
         });
+
+        await novoAdm.save();
+
+        res.status(201).json({
+            mensagem: "Administrador cadastrado com sucesso!",
+            adm: novoAdm
+        });
+
+    } catch (erro) {
+
+        res.status(500).json({
+            mensagem: "Erro ao cadastrar administrador.",
+            erro: erro.message
+        });
+
     }
 
-    return res.status(401).json({
-        mensagem: "Email ou senha do administrador incorretos."
-    });
 };
 
-const visualizarAdm = (req, res) => {
-    res.status(200).json({
-        nome: adm.nome,
-        email: adm.email
-    });
+
+// Listar ADMs
+const listarAdms = async (req, res) => {
+
+    try {
+
+        const adms = await Adm.find();
+
+        res.status(200).json(adms);
+
+    } catch (erro) {
+
+        res.status(500).json({
+            mensagem: "Erro ao listar administradores.",
+            erro: erro.message
+        });
+
+    }
+
 };
+
 
 module.exports = {
-    loginAdm,
-    visualizarAdm
+    cadastrarAdm,
+    listarAdms
 };

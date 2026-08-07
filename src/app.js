@@ -37,7 +37,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api', usuarioRoutes);
 app.use("/api", tutorRoutes);
 //app.use('/api/matches', matchRoutes);  // Matches (se houver)
-app.use("/api/adm", admRoutes); // adiicionei aqui a rota API do ADM
+app.use("/api", admRoutes); // adiicionei aqui a rota API do ADM
 
 // Rota de teste inicial para verificar se a API está online
 app.get('/api/teste', (req, res) => {

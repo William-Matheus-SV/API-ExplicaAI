@@ -2,13 +2,10 @@ const express = require("express");
 
 const router = express.Router();
 
-const {
-    loginAdm,
-    visualizarAdm
-} = require("../controllers/admController");
+const admController = require("../controllers/admController");
 
-router.post("/login", loginAdm);
+router.post("/adms/cadastro", admController.cadastrarAdm);
 
-router.get("/", visualizarAdm);
+router.get("/adms", admController.listarAdms);
 
 module.exports = router;
