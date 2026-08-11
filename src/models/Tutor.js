@@ -32,18 +32,15 @@ const tutorSchema = new mongoose.Schema({
         type: String
     }],
 
-    agendaDisponivel: [{
-        dia: {
-            type: String
-        },
-        horario: {
-            type: String
-        },
-        isDisponivel: {
-            type: Boolean,
-            default: false
-        }
-    }]
+    status_aprovacao: {
+    type: String,
+    enum: ["pendente", "aprovado", "rejeitado"],
+    default: "pendente"
+},
+    ativo: {
+        type: Boolean,
+        default: false
+    }
 
 }, {
     timestamps: true
