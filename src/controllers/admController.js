@@ -69,17 +69,9 @@ const alterarStatusTutor = async (req, res) => {
             return res.status(404).json({
                 mensagem: "Tutor não encontrado."
             });
-         }
+        }
 
         tutor.status_aprovacao = status;
-
-        if (status === "aprovado") {
-            tutor.ativo = true;
-        }
-
-        if (status === "rejeitado") {
-            tutor.ativo = false;
-        }
 
         await tutor.save();
 

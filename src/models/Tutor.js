@@ -31,15 +31,6 @@ const tutorSchema = new mongoose.Schema({
     materiasLecionadas: [{
         type: String
     }],
-
-    agendaDisponivel: [{
-        dia: {
-            type: String
-        },
-        horario: {
-            type: String
-        }
-    }],
     
     status_aprovacao: {
     type: String,
