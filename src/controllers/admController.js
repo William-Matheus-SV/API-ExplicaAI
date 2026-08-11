@@ -1,4 +1,5 @@
 const Adm = require("../models/Adm");
+const Tutor = require("../models/Tutor");
 
 // Cadastrar ADM
 const cadastrarAdm = async (req, res) => {
@@ -32,7 +33,6 @@ const cadastrarAdm = async (req, res) => {
         });
 
     }
-
 };
 
 
@@ -53,11 +53,55 @@ const listarAdms = async (req, res) => {
         });
 
     }
+};
+
+
+// Alterar status de aprovação do Tutor
+const alterarStatusTutor = async (req, res) => {
+
+    try {
+
+        const { status } = req.body;
+
+        const tutor = await Tutor.findById(req.params.id);
+
+        if (!tutor) {
+            return res.status(404).json({
+                mensagem: "Tutor não encontrado."
+            });
+         }
+
+        tutor.status_aprovacao = status;
+
+        if (status === "aprovado") {
+            tutor.ativo = true;
+        }
+
+        if (status === "rejeitado") {
+            tutor.ativo = false;
+        }
+
+        await tutor.save();
+
+        res.status(200).json({
+            mensagem: "Status do tutor atualizado com sucesso!",
+            tutor: tutor
+        });
+
+    } catch (erro) {
+
+        res.status(500).json({
+            mensagem: "Erro ao alterar status do tutor.",
+            erro: erro.message
+        });
+
+    }
 
 };
 
 
 module.exports = {
     cadastrarAdm,
-    listarAdms
+    listarAdms,
+    alterarStatusTutor
 };

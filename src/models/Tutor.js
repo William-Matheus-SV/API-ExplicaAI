@@ -39,8 +39,17 @@ const tutorSchema = new mongoose.Schema({
         horario: {
             type: String
         }
-    }]
-
+    }],
+    
+    status_aprovacao: {
+    type: String,
+    enum: ["pendente", "aprovado", "rejeitado"],
+    default: "pendente"
+},
+    ativo: {
+        type: Boolean,
+        default: false
+    }
 }, {
     timestamps: true
 });
