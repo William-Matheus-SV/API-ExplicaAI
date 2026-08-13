@@ -4,8 +4,9 @@ const tutorSchema = new mongoose.Schema({
 
     nome: {
         type: String,
-        required: true
-    },
+        required: true,
+        trim: true
+    },         
 
     idade: {
         type: Number,
@@ -15,7 +16,8 @@ const tutorSchema = new mongoose.Schema({
     matricula: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
 
     senha: {
@@ -25,11 +27,13 @@ const tutorSchema = new mongoose.Schema({
 
     bio: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
 
     materiasLecionadas: [{
-        type: String
+        type: String,
+        trim: true          //trim adicionado para evitar sobras de espaço
     }],
     
     status_aprovacao: {

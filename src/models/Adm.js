@@ -4,24 +4,24 @@ const admSchema = new mongoose.Schema({
 
     nome: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
 
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
 
     senha: {
         type: String,
         required: true
-    },
-
-    tipo: {
-        type: String,
-        default: "adm"
     }
+    
+}, {
+    timestamps: true // removi o "tipo" do adm pois nosso projeto já possui um model separado para Adm e adicionei o "timestamps para registrar a criação e a atualização do Adm caso hajá"
 
 });
 
