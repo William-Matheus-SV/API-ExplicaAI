@@ -15,7 +15,7 @@ const matchSchema = new mongoose.Schema(
     },
 
     agendaSlotId: {
-        type: mongoose.Schema.Type.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Agenda",
         required: [true, "O Match precisa estar vinculado a um horário da agenda"]
     },
