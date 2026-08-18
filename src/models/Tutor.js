@@ -35,11 +35,7 @@ const tutorSchema = new mongoose.Schema({
         type: String,
         trim: true          //trim adicionado para evitar sobras de espaço
     }],
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> feature/novo-cadastro
     status_aprovacao: {
     type: String,
     enum: ["pendente", "aprovado", "rejeitado"],
@@ -49,10 +45,7 @@ const tutorSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> feature/novo-cadastro
 }, {
     timestamps: true
 });
