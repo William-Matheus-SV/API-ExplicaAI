@@ -39,7 +39,7 @@ const tutorSchema = new mongoose.Schema({
         maxlength: [500, "A biografia não pode passar de 500 caracteres"]
     },
 
-    email: {
+    /*email: {
         type: String,
         required: [true, "O e-mail é obrigatório"],
         unique: true,
@@ -47,6 +47,7 @@ const tutorSchema = new mongoose.Schema({
         trim: true,
         match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
     },
+    */
 
     materiasLecionadas: [{
         type: String,

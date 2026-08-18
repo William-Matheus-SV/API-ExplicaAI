@@ -43,7 +43,7 @@ const usuarioSchema = new mongoose.Schema({
         required: [true, "A biografia é obrigatória"]
     },
 
-    email: {
+    /*email: {
         type: String,
         required: [true, "O e-mail é obrigatório"],
         unique: true,
@@ -51,6 +51,7 @@ const usuarioSchema = new mongoose.Schema({
         trim: true,
         match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
     },
+    */
 
     senha: {
         type: String,
