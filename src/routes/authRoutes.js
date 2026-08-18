@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
+const validarLogin = require("../middlewares/validarLogin");
 
 router.post("/login/aluno", validarLogin, authController.loginUsuario); // Rota POST para login de usuário
 router.post("/login/tutor", validarLogin, authController.loginTutor); // Rota POST para login de tutor
