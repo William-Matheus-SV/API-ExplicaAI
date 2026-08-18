@@ -1,8 +1,10 @@
 const Agenda = require("../models/Agenda");
+const Tutor = require("../models/Tutor");
 
-// ===================================================================
-// CRIAR SLOT — só o Tutor pode criar horários na própria agenda
-// ===================================================================
+const verificarTutorAtivo = async (tutorId) => {
+    const tutor = await Tutor.findById(tutorId);
+    return !!tutor && tutor.status_aprovacao === "aprovado";
+}
 const criarSlot = async (req, res) => {
     try {
         if (req.usuario.tipo !== "tutor") {
@@ -10,6 +12,10 @@ const criarSlot = async (req, res) => {
         }
 
         const tutorId = req.usuario.id; // sempre do token, nunca do body
+        
+        if (!(await verificarTutorAtivo(req.usuario.id))) {
+            return res.status(403).json({ message: "Conta não autorizada" });
+        }
         const { dataHorarioInicio, duracao } = req.body;
 
         if (!dataHorarioInicio || !duracao) {
@@ -65,6 +71,10 @@ const listarMeusSlots = async (req, res) => {
 
         const tutorId = req.usuario.id;
 
+        if (!(await verificarTutorAtivo(tutorId))) {
+            return res.status(403).json({ message: "Conta não autorizada" });
+        }
+
         // "semana atual" = hoje 00:00 até daqui 7 dias.
         // Isso é a versão simples do "reset semanal" que ainda está como débito técnico:
         // não reseta nada de verdade no banco, só recorta a janela de exibição.
@@ -92,6 +102,10 @@ const removerSlot = async (req, res) => {
     try {
         if (req.usuario.tipo !== "tutor") {
             return res.status(403).json({ message: "Apenas tutores podem remover horários" });
+        }
+
+        if (!(await verificarTutorAtivo(req.usuario.id))) {
+            return res.status(403).json({ message: "Conta não autorizada" });
         }
 
         const { id } = req.params;
