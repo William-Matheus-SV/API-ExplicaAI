@@ -9,12 +9,14 @@ const cadastrarAdm = async (req, res) => {
         const {
             nome,
             email,
+            matricula,
             senha
         } = req.body;
 
         const novoAdm = new Adm({
             nome,
             email,
+            matricula,
             senha
         });
 
@@ -34,7 +36,6 @@ const cadastrarAdm = async (req, res) => {
 
     }
 };
-
 
 // Listar ADMs
 const listarAdms = async (req, res) => {

@@ -4,20 +4,24 @@ const admSchema = new mongoose.Schema({
 
     nome: {
         type: String,
-        required: true,
+        required: [true, "Nome obrigatório"],
         trim: true
     },
 
     email: {
         type: String,
-        required: true,
-        unique: true,
+        required: [true, "Email obrigatório"],
         trim: true
+    },
+
+    matricula: {
+        type: String,
+        required: [true, "A matrícula é obrigatória"],
     },
 
     senha: {
         type: String,
-        required: true
+        required: [true , "A senha é obrigatória"]
     }
     
 }, {
