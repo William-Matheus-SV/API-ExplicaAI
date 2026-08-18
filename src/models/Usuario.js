@@ -1,18 +1,22 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const { materiasValidas } = require("../constants/materiasValidas");
 
 const usuarioSchema = new mongoose.Schema({
 
     nome: {
         type: String,
-        required: true,
-        trim: true
+        required: [true, "O nome é obrigatório"],
+        trim: true,
+        match: [/^[A-Za-zÀ-ÿ\s]+$/, "O nome não pode conter números ou símbolos"]
     },
 
     matricula: {
         type: String,
-        required: true,
+        required: [true, "A matrícula é obrigatória"],
         unique: true,
-        trim: true
+        trim: true,
+        match: [/^\d{6}$/, "A matrícula deve conter exatamente 6 dígitos numéricos"]
     },
 
     idade: {
@@ -24,13 +28,19 @@ const usuarioSchema = new mongoose.Schema({
 
     materias: [{
         type: String,
-        trim: true
+        required: [true, "As matérias são obrigatórias"],
+        trim: true,
+        enum: {
+            values: materiasValidas,
+            message: "Matéria inválida — escolha uma das opções disponíveis no sistema"
+        }
     }],
 
     bio: {
         type: String,
         trim: true,
-        maxlength: [500, "A biografia não pode passar de 500 caracteres"]
+        maxlength: [500, "A biografia não pode passar de 500 caracteres"],
+        required: [true, "A biografia é obrigatória"]
     },
 
     email: {
@@ -44,11 +54,20 @@ const usuarioSchema = new mongoose.Schema({
 
     senha: {
         type: String,
-        required: [true , "A senha é obrigatória"],
-        minlength: [6, "A senha deve ter no mínimo 6 caracteres"]
+        required: [true, "A senha é obrigatória"],
+        // PIN numérico de 6 dígitos (decisão de produto para o MVP)
+        match: [/^\d{6}$/, "A senha deve ser um PIN de exatamente 6 dígitos numéricos"],
+        select: false
     }
-},{
+}, {
     timestamps: true
+});
+
+// Roda antes de qualquer .save() — hash automático, só quando a senha muda de verdade
+usuarioSchema.pre("save", async function (next) {
+    if (!this.isModified("senha")) return next();
+    this.senha = await bcrypt.hash(this.senha, 10);
+    next();
 });
 
 module.exports = mongoose.model("Usuario", usuarioSchema);
