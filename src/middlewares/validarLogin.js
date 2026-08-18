@@ -7,11 +7,16 @@ const validarLogin = (req, res, next) => {
         return res.status(400).json({ message: "Matrícula e senha são obrigatórios" });
     }
 
-    
-    if (typeof matricula !== "string" || matricula.trim().length === 0) {
+     const matriculaRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!matriculaRegex.test(matricula)) {
+        return res.status(400).json({ message: "Matrícula inválido" });
+    }
+
+
+   /* if (typeof matricula !== "string" || matricula.trim().length === 0) {
         return res.status(400).json({ message: "Matrícula inválida" });
     }
-    
+    */
     next(); // Se tudo estiver certo, passa para o próximo middleware ou rota
 };
 
