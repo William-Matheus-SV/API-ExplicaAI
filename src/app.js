@@ -30,15 +30,25 @@ mongoose.connect(MONGO_URI)
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const tutorRoutes = require('./routes/tutorRoutes');
+<<<<<<< HEAD
 const matchRoutes = require('./routes/matchRoutes');
 const agendaRoutes = require('./routes/agendaRoutes');
 
+=======
+//const matchRoutes = require('./routes/matchRoutes'); // Criar depois
+const admRoutes = require("./routes/admRoutes"); // adicionei a rota do ADM
+>>>>>>> feature/novo-cadastro
 // Vinculando as rotas aos caminhos da API
 app.use('/api/auth', authRoutes);
 app.use('/api', usuarioRoutes);
 app.use("/api", tutorRoutes);
+<<<<<<< HEAD
 app.use("/api/agenda", agendaRoutes);
 app.use('/api/matches', matchRoutes);  
+=======
+//app.use('/api/matches', matchRoutes);  // Matches (se houver)
+app.use("/api", admRoutes); // adiicionei aqui a rota API do ADM
+>>>>>>> feature/novo-cadastro
 
 // Rota de teste inicial para verificar se a API está online
 app.get('/api/teste', (req, res) => {

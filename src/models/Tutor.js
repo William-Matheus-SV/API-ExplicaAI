@@ -4,8 +4,9 @@ const tutorSchema = new mongoose.Schema({
 
     nome: {
         type: String,
-        required: true
-    },
+        required: true,
+        trim: true
+    },         
 
     idade: {
         type: Number,
@@ -15,7 +16,8 @@ const tutorSchema = new mongoose.Schema({
     matricula: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
 
     senha: {
@@ -25,13 +27,19 @@ const tutorSchema = new mongoose.Schema({
 
     bio: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
 
     materiasLecionadas: [{
-        type: String
+        type: String,
+        trim: true          //trim adicionado para evitar sobras de espaço
     }],
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> feature/novo-cadastro
     status_aprovacao: {
     type: String,
     enum: ["pendente", "aprovado", "rejeitado"],
@@ -41,7 +49,10 @@ const tutorSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> feature/novo-cadastro
 }, {
     timestamps: true
 });
