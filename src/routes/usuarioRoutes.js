@@ -1,7 +1,3 @@
-// att
-// teste 2
-//kkkjj
-
 const express = require("express");//teste
 
 const router = express.Router();

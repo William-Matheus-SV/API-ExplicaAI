@@ -7,7 +7,8 @@ const loginUsuario = async (req, res) => {
     try {
         const { matricula, senha } = req.body;
 
-        const usuario = await Usuario.findOne({ matricula });
+        // Seleciona a senha explicitamente, pois ela não é retornada por padrão
+        const usuario = await Usuario.findOne({ matricula }).select("+senha");
 
         if (!usuario) {
             return res.status(404).json({
@@ -24,10 +25,7 @@ const loginUsuario = async (req, res) => {
         }
 
         const token = jwt.sign(
-            {
-                id: usuario._id,
-                matricula: usuario.matricula
-            },
+            { id: usuario._id, matricula: usuario.matricula, tipo: "aluno" },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
@@ -42,6 +40,7 @@ const loginUsuario = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("Erro ao realizar login:", error);
         res.status(500).json({
             message: "Erro ao realizar login",
             error: error.message
@@ -49,12 +48,11 @@ const loginUsuario = async (req, res) => {
     }
 };
 
-
 const loginTutor = async (req, res) => {
     try {
         const { matricula, senha } = req.body;
 
-        const tutor = await Tutor.findOne({ matricula });
+        const tutor = await Tutor.findOne({ matricula }).select("+senha");
 
         if (!tutor) {
             return res.status(404).json({
@@ -70,11 +68,15 @@ const loginTutor = async (req, res) => {
             });
         }
 
+        // Bloqueia login de tutor cujo cadastro ainda não foi aprovado pelo Admin
+        if (tutor.status_aprovacao !== "aprovado") {
+            return res.status(403).json({
+                message: "Seu cadastro ainda não foi aprovado. Aguarde a análise do administrador."
+            });
+        }
+
         const token = jwt.sign(
-            {
-                id: tutor._id,
-                matricula: tutor.matricula
-            },
+            { id: tutor._id, matricula: tutor.matricula, tipo: "tutor" },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
@@ -89,13 +91,13 @@ const loginTutor = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("Erro ao realizar login:", error);
         res.status(500).json({
             message: "Erro ao realizar login",
             error: error.message
         });
     }
 };
-
 
 module.exports = {
     loginUsuario,

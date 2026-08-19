@@ -30,14 +30,19 @@ mongoose.connect(MONGO_URI)
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const tutorRoutes = require('./routes/tutorRoutes');
+const matchRoutes = require('./routes/matchRoutes');
+const agendaRoutes = require('./routes/agendaRoutes');
 //const matchRoutes = require('./routes/matchRoutes'); // Criar depois
 const admRoutes = require("./routes/admRoutes"); // adicionei a rota do ADM
 // Vinculando as rotas aos caminhos da API
 app.use('/api/auth', authRoutes);
 app.use('/api', usuarioRoutes);
 app.use("/api", tutorRoutes);
+app.use("/api/agenda", agendaRoutes);
+app.use('/api/matches', matchRoutes);  
 //app.use('/api/matches', matchRoutes);  // Matches (se houver)
 app.use("/api", admRoutes); // adiicionei aqui a rota API do ADM
+
 
 // Rota de teste inicial para verificar se a API está online
 app.get('/api/teste', (req, res) => {
@@ -45,7 +50,7 @@ app.get('/api/teste', (req, res) => {
 });
 
 // Configuração da porta
-const PORT = 3000;
+const PORT =  process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando liso na porta ${PORT}`);
 });
