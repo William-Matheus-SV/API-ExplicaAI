@@ -43,14 +43,14 @@ const usuarioSchema = new mongoose.Schema({
         required: [true, "A biografia é obrigatória"]
     },
 
-    email: {
-        type: String,
-        required: [true, "O e-mail é obrigatório"],
-        unique: true,
-        lowercase: true,
-        trim: true,
-        match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
-    },
+//    email: {
+//        type: String,
+//      required: [true, "O e-mail é obrigatório"],
+//        unique: true,
+//        lowercase: true,
+//        trim: true,
+//        match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
+//    },
 
     senha: {
         type: String,
@@ -64,10 +64,12 @@ const usuarioSchema = new mongoose.Schema({
 });
 
 // Roda antes de qualquer .save() — hash automático, só quando a senha muda de verdade
-usuarioSchema.pre("save", async function (next) {
-    if (!this.isModified("senha")) return next();
+usuarioSchema.pre("save", async function () {
+
+    if (!this.isModified("senha")) return;
+    
     this.senha = await bcrypt.hash(this.senha, 10);
-    next();
+    ;
 });
 
 module.exports = mongoose.model("Usuario", usuarioSchema);

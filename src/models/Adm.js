@@ -8,11 +8,11 @@ const admSchema = new mongoose.Schema({
         trim: true
     },
 
-    email: {
-        type: String,
-        required: [true, "Email obrigatório"],
-        trim: true
-    },
+//    email: {
+//        type: String,
+//        required: [true, "Email obrigatório"],
+//        trim: true
+//    },
 
     matricula: {
         type: String,

@@ -39,14 +39,14 @@ const tutorSchema = new mongoose.Schema({
         maxlength: [500, "A biografia não pode passar de 500 caracteres"]
     },
 
-    email: {
-        type: String,
-        required: [true, "O e-mail é obrigatório"],
-        unique: true,
-        lowercase: true,
-        trim: true,
-        match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
-    },
+   // email: {
+      //  type: String,
+       // required: [true, "O e-mail é obrigatório"],
+       // unique: true,
+       // lowercase: true,
+      //  trim: true,
+      //  match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
+  //  },
 
     materiasLecionadas: [{
         type: String,
@@ -74,10 +74,13 @@ const tutorSchema = new mongoose.Schema({
 });
 
 // Mesmo hook do Usuario.js — hash automático, só quando a senha muda de verdade
-tutorSchema.pre("save", async function (next) {
-    if (!this.isModified("senha")) return next();
+// Hash automático da senha
+tutorSchema.pre("save", async function () {
+
+    if (!this.isModified("senha")) return;
+
     this.senha = await bcrypt.hash(this.senha, 10);
-    next();
+
 });
 
 module.exports = mongoose.model("Tutor", tutorSchema);
