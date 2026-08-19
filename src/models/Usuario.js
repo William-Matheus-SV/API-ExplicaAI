@@ -65,10 +65,9 @@ const usuarioSchema = new mongoose.Schema({
 });
 
 // Roda antes de qualquer .save() — hash automático, só quando a senha muda de verdade
-usuarioSchema.pre("save", async function (next) {
-    if (!this.isModified("senha")) return next();
+usuarioSchema.pre("save", async function () {
+    if (!this.isModified("senha")) return;
     this.senha = await bcrypt.hash(this.senha, 10);
-    next();
 });
 
 module.exports = mongoose.model("Usuario", usuarioSchema);

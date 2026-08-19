@@ -75,10 +75,10 @@ const tutorSchema = new mongoose.Schema({
 });
 
 // Mesmo hook do Usuario.js — hash automático, só quando a senha muda de verdade
-tutorSchema.pre("save", async function (next) {
-    if (!this.isModified("senha")) return next();
+tutorSchema.pre("save", async function () {
+    if (!this.isModified("senha")) return;
     this.senha = await bcrypt.hash(this.senha, 10);
-    next();
+    
 });
 
 module.exports = mongoose.model("Tutor", tutorSchema);
