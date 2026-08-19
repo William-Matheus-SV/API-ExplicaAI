@@ -38,7 +38,6 @@ const tutorSchema = new mongoose.Schema({
         required: [true, "A biografia é obrigatória"],
         maxlength: [500, "A biografia não pode passar de 500 caracteres"]
     },
-
     /*email: {
         type: String,
         required: [true, "O e-mail é obrigatório"],
@@ -46,9 +45,7 @@ const tutorSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
         match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
-    },
-    */
-
+    },*/
     materiasLecionadas: [{
         type: String,
         required: [true, "As matérias lecionadas são obrigatórias"],

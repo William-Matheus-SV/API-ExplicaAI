@@ -42,7 +42,6 @@ const usuarioSchema = new mongoose.Schema({
         maxlength: [500, "A biografia não pode passar de 500 caracteres"],
         required: [true, "A biografia é obrigatória"]
     },
-
     /*email: {
         type: String,
         required: [true, "O e-mail é obrigatório"],
@@ -52,7 +51,6 @@ const usuarioSchema = new mongoose.Schema({
         match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
     },
     */
-
     senha: {
         type: String,
         required: [true, "A senha é obrigatória"],
@@ -66,6 +64,7 @@ const usuarioSchema = new mongoose.Schema({
 
 // Roda antes de qualquer .save() — hash automático, só quando a senha muda de verdade
 usuarioSchema.pre("save", async function () {
+
     if (!this.isModified("senha")) return;
     this.senha = await bcrypt.hash(this.senha, 10);
 });
