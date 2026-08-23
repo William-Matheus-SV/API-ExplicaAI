@@ -23,7 +23,7 @@ app.use(express.urlencoded({extended: true})); //Permite ler dados de formulári
 
 
 //Conexão com MongoDB Local
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/explicaai";
+//const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/explicaai";
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log("Conectado ao MongoDB com sucesso!"))
