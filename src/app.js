@@ -36,6 +36,7 @@ const tutorRoutes = require('./routes/tutorRoutes');
 const matchRoutes = require('./routes/matchRoutes');
 const agendaRoutes = require('./routes/agendaRoutes');
 const admRoutes = require("./routes/admRoutes"); // adicionei a rota do ADM
+const avaliacaoRoutes = require("./routes/avaliacaoRoutes")
 
 // Vinculando as rotas aos caminhos da API
 app.use('/api/auth', authRoutes);
