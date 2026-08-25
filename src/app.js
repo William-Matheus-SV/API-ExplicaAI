@@ -41,9 +41,10 @@ const admRoutes = require("./routes/admRoutes"); // adicionei a rota do ADM
 app.use('/api/auth', authRoutes);
 app.use('/api', usuarioRoutes);
 app.use("/api", tutorRoutes);
-app.use("/api/agenda", agendaRoutes);
-app.use('/api/matches', matchRoutes);  
+app.use("/api/agenda", agendaRoutes); 
+app.use('/api/matches', matchRoutes);  // Rota para matches
 app.use("/api", admRoutes); // adicionei aqui a rota API do ADM
+app.use('/api/avaliacoes', avaliacaoRoutes); // Rota para avaliações
 
 
 // Rota de teste inicial para verificar se a API está online
