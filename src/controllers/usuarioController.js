@@ -38,9 +38,28 @@ const cadastrarUsuario = async (req, res) => {
         });
 
     }
+};
+    const buscarUsuario = async (req, res) => {
+    try {
+        const usuario = await Usuario.findOne({ matricula: req.params.matricula });
 
+        if (!usuario) {
+            return res.status(404).json({
+                mensagem: "Usuário não encontrado."
+            });
+        }
+
+        res.status(200).json(usuario);
+
+    } catch (erro) {
+        res.status(500).json({
+            mensagem: "Erro ao buscar usuário.",
+            erro: erro.message
+        });
+    }
 };
 
 module.exports = {
-    cadastrarUsuario
+    cadastrarUsuario,
+    buscarUsuario
 };

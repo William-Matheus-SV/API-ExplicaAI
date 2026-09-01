@@ -21,6 +21,7 @@ const tutorRoutes = require("./routes/tutorRoutes");
 const matchRoutes = require("./routes/matchRoutes");
 const agendaRoutes = require("./routes/agendaRoutes");
 const admRoutes = require("./routes/admRoutes");
+const avaliacaoRoutes = require("./routes/avaliacaoRoutes");
 
 // Vinculando as rotas
 app.use("/api/auth", authRoutes);
@@ -29,6 +30,7 @@ app.use("/api", tutorRoutes);
 app.use("/api/agenda", agendaRoutes);
 app.use("/api/matches", matchRoutes);
 app.use("/api", admRoutes);
+app.use("/api/avaliacoes", avaliacaoRoutes);
 
 // Rota de teste
 app.get("/api/teste", (req, res) => {

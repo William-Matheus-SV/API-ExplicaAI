@@ -11,7 +11,6 @@ const cadastrarTutor = async (req, res) => {
             matricula,
             senha,
             bio,
-            email,
             materiasLecionadas,
             agendaDisponivel
         } = req.body;
@@ -22,7 +21,6 @@ const cadastrarTutor = async (req, res) => {
             matricula,
             senha,
             bio,
-            email,
             materiasLecionadas,
             agendaDisponivel
         });

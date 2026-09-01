@@ -35,7 +35,11 @@ const loginUsuario = async (req, res) => {
             token: token,
             usuario: {
                 id: usuario._id,
-                nome: usuario.nome
+                nome: usuario.nome,
+                matricula: usuario.matricula,
+                idade: usuario.idade,
+                bio: usuario.bio,
+                materias: usuario.materias || []
             }
         });
 
@@ -86,7 +90,12 @@ const loginTutor = async (req, res) => {
             token: token,
             tutor: {
                 id: tutor._id,
-                nome: tutor.nome
+                nome: tutor.nome,
+                idade: tutor.matricula,
+                idade: tutor.idade,
+                bio: tutor.bio,
+                materiasLecionadas: tutor.materiasLecionadas || [],
+                agendaDisponivel: tutor.agendaDisponivel || []
             }
         });
 
