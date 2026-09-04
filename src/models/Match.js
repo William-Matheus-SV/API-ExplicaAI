@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
+const { materiasValidas } = require("../constants/materiasValidas");
 
 const matchSchema = new mongoose.Schema(
     {
     alunoId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Usuario",
-        required:[true, "O Match precisa estar vinculado a um aluno"]
+        required: [true, "O Match precisa estar vinculado a um aluno"]
     },
 
     tutorId: {
@@ -18,6 +19,15 @@ const matchSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Agenda",
         required: [true, "O Match precisa estar vinculado a um horário da agenda"]
+    },
+
+    materia: {
+        type: String,
+        required: [true, "O Match precisa indicar qual matéria será estudada"],
+        enum: {
+            values: materiasValidas,
+            message: "Matéria inválida — escolha uma das opções disponíveis no sistema"
+        }
     },
 
     dataHoraAgendada: {
@@ -34,21 +44,10 @@ const matchSchema = new mongoose.Schema(
         default: "confirmado"
     },
 
-    confirmacaoAluno: {
-        type: Boolean,
-        default: false
+    confirmacaoAluno: { type: Boolean, default: false },
+    confirmacaoTutor: { type: Boolean, default: false },
     },
-
-    confirmacaoTutor: {
-        type: Boolean, 
-        default: false
-    },
-    },
-   
-    {
-    timestamps: true
-  }
+    { timestamps: true }
 );
-
 
 module.exports = mongoose.model("Match", matchSchema);

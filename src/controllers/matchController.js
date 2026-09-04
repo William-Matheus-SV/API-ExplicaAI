@@ -10,15 +10,19 @@ const criarMatch = async (req, res) => {
         }
 
         const alunoId = req.usuario.id;
-        const {tutorId, agendaSlotId} = req.body;
+        const {tutorId, agendaSlotId, materia} = req.body;
 
-        if(!tutorId || !agendaSlotId) {
-            return res.status(400).json({ message: "TutorId e agendaSlotId são obrigatórios" });
+        if(!tutorId || !agendaSlotId || !materia) {
+            return res.status(400).json({ message: "TutorId, agendaSlotId e materia são obrigatórios" });
         }
 
         const tutor = await Tutor.findById(tutorId);
         if (!tutor) {
             return res.status(404).json({ message: "Tutor não encontrado" });
+        }
+
+        if (!tutor.materiasLecionadas.includes(materia)) {
+        return res.status(400).json({ message: "Este tutor não leciona a matéria informada" });
         }
 
         const agendaSlot = await Agenda.findById(agendaSlotId);
@@ -38,6 +42,7 @@ const criarMatch = async (req, res) => {
             alunoId: alunoId,
             tutorId: tutorId,
             agendaSlotId: agendaSlotId,
+            materia: materia,
             dataHoraAgendada: agendaSlot.dataHorarioInicio,
             // status: não passar - o default "confirmado" já está no Schema
         });
@@ -51,6 +56,7 @@ const criarMatch = async (req, res) => {
                 alunoId: match.alunoId,
                 tutorId: match.tutorId,
                 agendaSlotId: match.agendaSlotId,
+                materia: match.materia,
                 dataHoraAgendada: match.dataHoraAgendada,
                 status: match.status
             }
