@@ -218,11 +218,46 @@ const confirmarPresenca = async (req, res) => {
         res.status(500).json({ error: "Erro ao confirmar presença" });
     }
 };
+// ===================================================================
+// LISTAR SEMANA DO ALUNO — todos os matches da semana atual (seg a sex),
+// qualquer status, pra montar a tela de agenda completa
+// ===================================================================
+const listarSemanaDoAluno = async (req, res) => {
+    try{
+        if (req.usuario.tipo !== "aluno") {
+            return res.status(403).json ({ error: "Apenas alunos podem acessar esta lista" });
+        }
+        const alunoId = req.usuario.id;
+        // Calcula segunda 00:00 e sexta 23:59 da semana atual
+        const hoje = new Date();
+        const diaSemana = hoje.getDay(); // 0=Dom, 1=Seg, ..., 6=Sab
+        const diferencaParaSegunda = (diaSemana === 0 ? -6 : 1 - diaSemana); // se domingo, volta 6 dias
 
+        const inicioSemana = new Date (hoje);
+        inicioSemana.setDate(hoje.getDate() + diferencaParaSegunda);
+        inicioSemana.setHours(0, 0, 0, 0);
+
+        const fimSemana = new Date (inicioSemana);
+        fimSemana.setDate(inicioSemana.getDate() + 4); // sexta
+        fimSemana.setHours(23, 59, 59, 999);
+
+        const matches = await Match.find({
+            alunoId,
+            dataHoraAgendada : { $gte: inicioSemana, $lte: fimSemana }
+        })
+            .sort({ dataHoraAgendada: 1})
+            .populate("tutorId", "nome")
+            .populate("agendaSlotId", "duracao");
+        res.status(200).json ({ matches });
+    } catch (error){
+        res.status(500).json({ error: "Erro ao listar semana do aluno" });
+    }
+};
 module.exports = {
     criarMatch,
     listarProximosDoAluno,
     listarRealizadosDoTutor,
     cancelarMatch,
-    confirmarPresenca
+    confirmarPresenca,
+    listarSemanaDoAluno
 };
