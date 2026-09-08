@@ -8,5 +8,6 @@ router.patch("/:id/confirm", verificarToken, matchController.confirmarPresenca);
 router.patch("/:id/cancel", verificarToken, matchController.cancelarMatch);
 router.get("/meus/proximos", verificarToken, matchController.listarProximosDoAluno);
 router.get("/meus/realizados", verificarToken, matchController.listarRealizadosDoTutor);
+router.get("/meus/semana", verificarToken, matchController.listarSemanaDoAluno);
 
 module.exports = router;
