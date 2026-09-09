@@ -6,5 +6,6 @@ const verificarToken = require("../middlewares/verificarToken");
 router.post("/", verificarToken, avaliacaoController.criarAvaliacao);
 router.get("/minhas", verificarToken, avaliacaoController.listarMinhasAvaliacoes);
 router.get("/tutor/:tutorId", avaliacaoController.listarAvaliacoesDoTutor);
+router.get("/pendentes", verificarToken, avaliacaoController.listarPendentes);
 
 module.exports = router;

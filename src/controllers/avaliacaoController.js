@@ -103,8 +103,61 @@ const listarAvaliacoesDoTutor = async (req, res) => {
     }
 };
 
+// ===================================================================
+// LISTAR AVALIAÇÕES PENDENTES — matches "realizado" que o usuário
+// logado ainda não avaliou
+// ===================================================================
+const listarPendentes = async (req, res) => {
+    try {
+        const usuarioId = req.usuario.id;
+        const tipo = req.usuario.tipo;
+
+        if (tipo !== "aluno" && tipo !== "tutor") {
+            return res.status(403).json({ error: "Tipo de usuário inválido para esta consulta" });
+        }
+
+        // Etapa 1 — descobrir quais matchId esse usuário JÁ avaliou
+        const avaliacoesFeitas = await Avaliacao.find({
+            avaliadorId: usuarioId
+        }).select("matchId");
+
+        const matchIdsJaAvaliados = avaliacoesFeitas.map((av) => av.matchId);
+
+        // Etapa 2 — filtro base depende de quem está pedindo
+        const campoFiltro = tipo === "aluno" ? "alunoId" : "tutorId";
+
+        // Etapa 3 — busca matches realizados, excluindo os já avaliados
+        const matches = await Match.find({
+            [campoFiltro]: usuarioId,
+            status: "realizado",
+            _id: { $nin: matchIdsJaAvaliados }
+        })
+            .sort({ dataHoraAgendada: -1 })
+            .populate(tipo === "aluno" ? "tutorId" : "alunoId", "nome");
+
+        // Etapa 4 — monta a resposta no formato que o front espera
+        const pendentes = matches.map((match) => {
+            const outraParte = tipo === "aluno" ? match.tutorId : match.alunoId;
+
+            return {
+                matchId: match._id,
+                nome: outraParte ? outraParte.nome : null,
+                materia: match.materia,
+                dataHoraAgendada: match.dataHoraAgendada
+            };
+        });
+
+        res.status(200).json({ pendentes });
+
+    } catch (error) {
+        console.error("Erro ao listar avaliações pendentes:", error);
+        res.status(500).json({ error: "Erro ao listar avaliações pendentes" });
+    }
+};
+
 module.exports = {
     criarAvaliacao,
     listarMinhasAvaliacoes,
-    listarAvaliacoesDoTutor
+    listarAvaliacoesDoTutor,
+    listarPendentes
 };
