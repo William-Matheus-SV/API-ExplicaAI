@@ -9,5 +9,6 @@ router.patch("/:id/cancel", verificarToken, matchController.cancelarMatch);
 router.get("/meus/proximos", verificarToken, matchController.listarProximosDoAluno);
 router.get("/meus/realizados", verificarToken, matchController.listarRealizadosDoTutor);
 router.get("/meus/semana", verificarToken, matchController.listarSemanaDoAluno);
+router.get("/estatisticas", verificarToken, matchController.listarEstatisticas);
 
 module.exports = router;

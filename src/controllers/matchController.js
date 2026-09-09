@@ -253,11 +253,49 @@ const listarSemanaDoAluno = async (req, res) => {
         res.status(500).json({ error: "Erro ao listar semana do aluno" });
     }
 };
+
+// ===================================================================
+// ESTATÍSTICAS DE MATCHES — funciona tanto pra Aluno quanto pra Tutor,
+// dependendo do tipo presente no token (req.usuario.tipo)
+// ===================================================================
+const listarEstatisticas = async (req, res) => {
+    try {
+        const tipo = req.usuario.tipo;
+
+        if (tipo !== "aluno" && tipo !== "tutor") {
+            return res.status(403).json({ error: "Tipo de usuário inválido para esta consulta" });
+        }
+
+        // Monta o filtro base dependendo de quem está pedindo:
+        // Aluno consulta pelos matches em que ele é o alunoId,
+        // Tutor consulta pelos matches em que ele é o tutorId.
+        const campoFiltro = tipo === "aluno" ? "alunoId" : "tutorId";
+        const filtroBase = { [campoFiltro]: req.usuario.id };
+
+        const aulasConcluidas = await Match.countDocuments({
+            ...filtroBase,
+            status: "realizado"
+        });
+
+        const aulasAgendadas = await Match.countDocuments({
+            ...filtroBase,
+            status: "confirmado"
+        });
+
+        res.status(200).json({ aulasConcluidas, aulasAgendadas });
+
+    } catch (error) {
+        console.error("Erro ao listar estatísticas:", error);
+        res.status(500).json({ error: "Erro ao listar estatísticas" });
+    }
+};
+
 module.exports = {
     criarMatch,
     listarProximosDoAluno,
     listarRealizadosDoTutor,
     cancelarMatch,
     confirmarPresenca,
+    listarEstatisticas,
     listarSemanaDoAluno
 };
