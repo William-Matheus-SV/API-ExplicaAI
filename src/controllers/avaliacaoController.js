@@ -102,9 +102,26 @@ const listarAvaliacoesDoTutor = async (req, res) => {
         res.status(500).json({ message: "Erro ao listar avaliações do tutor" });
     }
 };
+// ===================================================================
+// MINHAS AVALIAÇÕES  — rota pública consulta antes de escolher
+// ===================================================================
+const listarEnviadas = async (req, res) => {
+    try {
+        const avaliacoes = await Avaliacao.find({
+            avaliadorId: req.usuario.id,
+            avaliadorTipo: req.usuario.tipo
+        }).sort({ createdAt: -1 });
 
+        res.status(200).json({ avaliacoes });
+
+    } catch (error) {
+        console.error("Erro ao listar avaliações enviadas:", error);
+        res.status(500).json({ message: "Erro ao listar avaliações enviadas" });
+    }
+};
 module.exports = {
     criarAvaliacao,
     listarMinhasAvaliacoes,
-    listarAvaliacoesDoTutor
+    listarAvaliacoesDoTutor,
+    listarEnviadas
 };
