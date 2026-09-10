@@ -90,11 +90,61 @@ const buscarTutor = async (req, res) => {
     }
 
 };
+// Atualizar tutor adicionada
+const atualizarTutor = async (req, res) => {
+    try {
+
+        const { matricula } = req.params;
+        const { materiasLecionadas, bio, idade } = req.body;
+
+        const tutor = await Tutor.findOne({ matricula });
+
+        if (!tutor) {
+            return res.status(404).json({
+                mensagem: "Tutor não encontrado."
+            });
+        }
+
+        if (materiasLecionadas !== undefined) {
+            tutor.materiasLecionadas = materiasLecionadas;
+        }
+
+        if (bio !== undefined) {
+            tutor.bio = bio;
+        }
+
+        if (idade !== undefined) {
+            tutor.idade = idade;
+        }
+
+        await tutor.save();
+
+        res.status(200).json({
+            mensagem: "Perfil do tutor atualizado com sucesso!",
+            tutor
+        });
+
+    } catch (erro) {
+
+        if (erro.name === "ValidationError") {
+            return res.status(400).json({
+                mensagem: erro.message
+            });
+        }
+
+        console.error("Erro ao atualizar tutor:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro ao atualizar tutor."
+        });
+    }
+};
 
 module.exports = {
     cadastrarTutor,
     listarTutores,
-    buscarTutor
+    buscarTutor,
+    atualizarTutor
 };
 
 // adicionei o "tutorController.js" na main!

@@ -39,7 +39,8 @@ const cadastrarUsuario = async (req, res) => {
 
     }
 };
-    const buscarUsuario = async (req, res) => {
+
+const buscarUsuario = async (req, res) => {
     try {
         const usuario = await Usuario.findOne({ matricula: req.params.matricula });
 
@@ -58,8 +59,58 @@ const cadastrarUsuario = async (req, res) => {
         });
     }
 };
+// Atualizar aluno adicionada
+const atualizarUsuario = async (req, res) => {
+    try {
+
+        const { matricula } = req.params;
+        const { materias, bio, idade } = req.body;
+
+        const usuario = await Usuario.findOne({ matricula });
+
+        if (!usuario) {
+            return res.status(404).json({
+                mensagem: "Usuário não encontrado."
+            });
+        }
+
+        if (materias !== undefined) {
+            usuario.materias = materias;
+        }
+
+        if (bio !== undefined) {
+            usuario.bio = bio;
+        }
+
+        if (idade !== undefined) {
+            usuario.idade = idade;
+        }
+
+        await usuario.save();
+
+        res.status(200).json({
+            mensagem: "Perfil atualizado com sucesso!",
+            usuario
+        });
+
+    } catch (erro) {
+
+        if (erro.name === "ValidationError") {
+            return res.status(400).json({
+                mensagem: erro.message
+            });
+        }
+
+        console.error("Erro ao atualizar usuário:", erro);
+
+        res.status(500).json({
+            mensagem: "Erro ao atualizar usuário."
+        });
+    }
+};
 
 module.exports = {
     cadastrarUsuario,
-    buscarUsuario
+    buscarUsuario,
+    atualizarUsuario
 };
