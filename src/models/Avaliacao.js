@@ -11,7 +11,8 @@ const avaliacaoSchema = new mongoose.Schema({
     // Quem escreveu a avaliação
     avaliadorId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: [true, "É necessário identificar quem avaliou"]
+        required: [true, "É necessário identificar quem avaliou"],
+        //refPath: "avaliadorModel"
     },
     avaliadorTipo: {
         type: String,
@@ -22,7 +23,8 @@ const avaliacaoSchema = new mongoose.Schema({
     // Quem recebeu a avaliação
     avaliadoId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: [true, "É necessário identificar quem foi avaliado"]
+        required: [true, "É necessário identificar quem foi avaliado"],
+        //refPath: "avaliadorModel"
     },
     avaliadoTipo: {
         type: String,
