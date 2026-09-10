@@ -3,6 +3,10 @@ const router = express.Router();
 const avaliacaoController = require("../controllers/avaliacaoController");
 const verificarToken = require("../middlewares/verificarToken");
 
+router.get("/teste", (req, res) => {
+    res.json({ mensagem: "Rotas de avaliação estão funcionando!" });
+});
+
 router.post("/", verificarToken, avaliacaoController.criarAvaliacao);
 router.get("/minhas", verificarToken, avaliacaoController.listarMinhasAvaliacoes);
 router.get("/tutor/:tutorId", avaliacaoController.listarAvaliacoesDoTutor);
