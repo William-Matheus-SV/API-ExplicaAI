@@ -2,8 +2,7 @@ const itinerarios = {
     "Linguagens e suas tecnologias": [
         "Português",
         "Inglês",
-        "Espanhol",
-        "Artes"
+        "Espanhol"
     ],
     "Matemática e suas tecnologias": [
         "Matemática",

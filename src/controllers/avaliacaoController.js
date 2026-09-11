@@ -102,9 +102,75 @@ const listarAvaliacoesDoTutor = async (req, res) => {
         res.status(500).json({ message: "Erro ao listar avaliações do tutor" });
     }
 };
+// ===================================================================
+// MINHAS AVALIAÇÕES ENVIADAS — o usuário logado vê o que ele mesmo avaliou
+// ===================================================================
+const listarEnviadas = async (req, res) => {
+    try {
+        const avaliacoes = await Avaliacao.find({
+            avaliadorId: req.usuario.id,
+            avaliadorTipo: req.usuario.tipo
+        }).sort({ createdAt: -1 });
+
+        res.status(200).json({ avaliacoes });
+
+    } catch (error) {
+        console.error("Erro ao listar avaliações enviadas:", error);
+        res.status(500).json({ message: "Erro ao listar avaliações enviadas" });
+    }
+};
+// ===================================================================
+// LISTAR AVALIAÇÕES PENDENTES — matches "realizado" que o usuário
+// logado ainda não avaliou
+// ===================================================================
+const listarPendentes = async (req, res) => {
+    try {
+        const usuarioId = req.usuario.id;
+        const tipo = req.usuario.tipo;
+
+        if (tipo !== "aluno" && tipo !== "tutor") {
+            return res.status(403).json({ error: "Tipo de usuário inválido para esta consulta" });
+        }
+
+        const avaliacoesFeitas = await Avaliacao.find({
+            avaliadorId: usuarioId
+        }).select("matchId");
+
+        const matchIdsJaAvaliados = avaliacoesFeitas.map((av) => av.matchId);
+
+        const campoFiltro = tipo === "aluno" ? "alunoId" : "tutorId";
+
+        const matches = await Match.find({
+            [campoFiltro]: usuarioId,
+            status: "realizado",
+            _id: { $nin: matchIdsJaAvaliados }
+        })
+            .sort({ dataHoraAgendada: -1 })
+            .populate(tipo === "aluno" ? "tutorId" : "alunoId", "nome");
+
+        const pendentes = matches.map((match) => {
+            const outraParte = tipo === "aluno" ? match.tutorId : match.alunoId;
+
+            return {
+                matchId: match._id,
+                nome: outraParte ? outraParte.nome : null,
+                materia: match.materia,
+                dataHoraAgendada: match.dataHoraAgendada
+            };
+        });
+
+        res.status(200).json({ pendentes });
+
+    } catch (error) {
+        console.error("Erro ao listar avaliações pendentes:", error);
+        res.status(500).json({ error: "Erro ao listar avaliações pendentes" });
+    }
+};
 
 module.exports = {
     criarAvaliacao,
     listarMinhasAvaliacoes,
-    listarAvaliacoesDoTutor
+    listarAvaliacoesDoTutor,
+    listarEnviadas,
+    listarPendentes
 };
