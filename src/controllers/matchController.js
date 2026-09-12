@@ -38,6 +38,26 @@ const criarMatch = async (req, res) => {
             return res.status(409).json({ message: "Este horário não está mais disponível" });
         }
 
+        // Verifica se o Aluno já tem outra aula confirmada que se sobrepõe a esse horário
+        const inicioNovo = agendaSlot.dataHorarioInicio;
+        const fimNovo = new Date(inicioNovo.getTime() + agendaSlot.duracao * 60 * 60 * 1000);
+
+        const matchesDoAluno = await Match.find({
+            alunoId,
+            status: "confirmado"
+        }).populate("agendaSlotId", "dataHorarioInicio duracao");
+
+        const temConflito = matchesDoAluno.some((m) => {
+            if (!m.agendaSlotId) return false;
+            const inicioExistente = m.agendaSlotId.dataHorarioInicio;
+            const fimExistente = new Date(inicioExistente.getTime() + m.agendaSlotId.duracao * 60 * 60 * 1000);
+            return inicioNovo < fimExistente && inicioExistente < fimNovo;
+        });
+
+        if (temConflito) {
+            return res.status(409).json({ message: "Você já tem uma aula marcada que conflita com esse horário" });
+        }
+
         const match = await Match.create({
             alunoId: alunoId,
             tutorId: tutorId,
