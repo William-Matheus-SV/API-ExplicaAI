@@ -251,7 +251,14 @@ const listarSemanaDoAluno = async (req, res) => {
         // Calcula segunda 00:00 e sexta 23:59 da semana atual
         const hoje = new Date();
         const diaSemana = hoje.getDay(); // 0=Dom, 1=Seg, ..., 6=Sab
-        const diferencaParaSegunda = (diaSemana === 0 ? -6 : 1 - diaSemana); // se domingo, volta 6 dias
+        let diferencaParaSegunda;
+            if (diaSemana === 0) {
+                diferencaParaSegunda = 1; // domingo → amanhã já é segunda
+            } else if (diaSemana === 6) {
+                diferencaParaSegunda = 2; // sábado → depois de amanhã é segunda
+            } else {
+                diferencaParaSegunda = 1 - diaSemana; // dia de semana normal, segunda dessa mesma semana
+            }
 
         const inicioSemana = new Date (hoje);
         inicioSemana.setDate(hoje.getDate() + diferencaParaSegunda);
