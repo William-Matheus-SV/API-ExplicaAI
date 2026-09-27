@@ -140,11 +140,50 @@ const atualizarTutor = async (req, res) => {
     }
 };
 
+//Adicionando o Controller para atualizar a foto de perfil do tutor
+
+const atualizarFotoPerfil = async (req, res) => {
+    try {
+        const { matricula } = req.params;
+
+        if (!req.file) {
+            return res.status(400).json({
+                mensagem: "Nenhuma foto foi enviada."
+            });
+        }
+
+        const tutor = await Tutor.findOne({ matricula });
+
+        if (!tutor) {
+            return res.status(404).json({
+                mensagem: "Tutor não encontrado."
+            });
+        }
+
+        tutor.fotoPerfil = `/uploads/perfis/${req.file.filename}`;
+
+        await tutor.save();
+
+        return res.status(200).json({
+            mensagem: "Foto de perfil atualizada com sucesso!",
+            fotoPerfil: tutor.fotoPerfil
+        });
+
+    } catch (erro) {
+        console.error("Erro ao atualizar foto do tutor:", erro);
+
+        return res.status(500).json({
+            mensagem: "Erro ao atualizar foto de perfil."
+        });
+    }
+};
+
 module.exports = {
     cadastrarTutor,
     listarTutores,
     buscarTutor,
-    atualizarTutor
+    atualizarTutor,
+    atualizarFotoPerfil
 };
 
 // adicionei o "tutorController.js" na main!

@@ -109,8 +109,47 @@ const atualizarUsuario = async (req, res) => {
     }
 };
 
+//Adicionando o Controller de atualizar a foto de perfil do usuario
+
+const atualizarFotoPerfil = async (req, res) => {
+    try {
+        const { matricula } = req.params;
+
+        if (!req.file) {
+            return res.status(400).json({
+                mensagem: "Nenhuma foto foi enviada."
+            });
+        }
+
+        const usuario = await Usuario.findOne({ matricula });
+
+        if (!usuario) {
+            return res.status(404).json({
+                mensagem: "Usuário não encontrado."
+            });
+        }
+
+        usuario.fotoPerfil = `/uploads/perfis/${req.file.filename}`;
+
+        await usuario.save();
+
+        return res.status(200).json({
+            mensagem: "Foto de perfil atualizada com sucesso!",
+            fotoPerfil: usuario.fotoPerfil
+        });
+
+    } catch (erro) {
+        console.error("Erro ao atualizar foto:", erro);
+
+        return res.status(500).json({
+            mensagem: "Erro ao atualizar foto de perfil."
+        });
+    }
+};
+
 module.exports = {
     cadastrarUsuario,
     buscarUsuario,
-    atualizarUsuario
+    atualizarUsuario,
+    atualizarFotoPerfil
 };

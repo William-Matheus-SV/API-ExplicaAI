@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const tutorController = require("../controllers/tutorController");
+const uploadFoto = require("../middlewares/uploadFoto");
 
 router.post("/tutores/cadastro", tutorController.cadastrarTutor);
 
@@ -14,6 +15,9 @@ router.get("/tutores/:matricula", tutorController.buscarTutor);
 
 // Atualizar tutor
 router.put("/tutores/:matricula", tutorController.atualizarTutor);
+
+// Atualizar foto perfil
+router.post("/tutores/:matricula/foto",uploadFoto.single("foto"),tutorController.atualizarFotoPerfil);
 
 module.exports = router;
 

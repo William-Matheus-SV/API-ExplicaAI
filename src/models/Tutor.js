@@ -62,6 +62,11 @@ const tutorSchema = new mongoose.Schema({
         default: "pendente"
     },
 
+    fotoPerfil: {
+    type: String,
+    default: null
+    }, // parte da foto de perfil do tutor
+
     ativo: {
         type: Boolean,
         default: false

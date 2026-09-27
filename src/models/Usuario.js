@@ -51,6 +51,12 @@ const usuarioSchema = new mongoose.Schema({
         match: [/\S+@\S+\.\S+/, "Por favor, insira um e-mail válido"]
     },
     */
+
+    fotoPerfil: {
+    type: String,
+    default: null
+    }, // parte da foto de perfilvdi aluno
+
     senha: {
         type: String,
         required: [true, "A senha é obrigatória"],

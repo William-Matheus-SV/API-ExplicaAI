@@ -2,10 +2,12 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const path = require("path"); // Adicionei o path
 
 const app = express();
 
 // Middlewares
+
 app.use(cors({
     origin: process.env.FRONTEND_URL || "*",
     credentials: true
@@ -14,7 +16,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Arquivos de upload
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 // Importando as rotas
+
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const authRoutes = require("./routes/authRoutes");
 const tutorRoutes = require("./routes/tutorRoutes");
@@ -24,6 +30,7 @@ const admRoutes = require("./routes/admRoutes");
 const avaliacaoRoutes = require("./routes/avaliacaoRoutes");
 
 // Vinculando as rotas
+
 app.use("/api/auth", authRoutes);
 app.use("/api", usuarioRoutes);
 app.use("/api", tutorRoutes);
@@ -33,6 +40,7 @@ app.use("/api", admRoutes);
 app.use("/api/avaliacoes", avaliacaoRoutes);
 
 // Rota de teste
+
 app.get("/api/teste", (req, res) => {
     res.json({
         mensagem: "API do ExplicaAí funcionando e aguardando conexões!"
