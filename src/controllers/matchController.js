@@ -38,6 +38,26 @@ const criarMatch = async (req, res) => {
             return res.status(409).json({ message: "Este horário não está mais disponível" });
         }
 
+        // Verifica se o Aluno já tem outra aula confirmada que se sobrepõe a esse horário
+        const inicioNovo = agendaSlot.dataHorarioInicio;
+        const fimNovo = new Date(inicioNovo.getTime() + agendaSlot.duracao * 60 * 60 * 1000);
+
+        const matchesDoAluno = await Match.find({
+            alunoId,
+            status: "confirmado"
+        }).populate("agendaSlotId", "dataHorarioInicio duracao");
+
+        const temConflito = matchesDoAluno.some((m) => {
+            if (!m.agendaSlotId) return false;
+            const inicioExistente = m.agendaSlotId.dataHorarioInicio;
+            const fimExistente = new Date(inicioExistente.getTime() + m.agendaSlotId.duracao * 60 * 60 * 1000);
+            return inicioNovo < fimExistente && inicioExistente < fimNovo;
+        });
+
+        if (temConflito) {
+            return res.status(409).json({ message: "Você já tem uma aula marcada que conflita com esse horário" });
+        }
+
         const match = await Match.create({
             alunoId: alunoId,
             tutorId: tutorId,
@@ -231,7 +251,14 @@ const listarSemanaDoAluno = async (req, res) => {
         // Calcula segunda 00:00 e sexta 23:59 da semana atual
         const hoje = new Date();
         const diaSemana = hoje.getDay(); // 0=Dom, 1=Seg, ..., 6=Sab
-        const diferencaParaSegunda = (diaSemana === 0 ? -6 : 1 - diaSemana); // se domingo, volta 6 dias
+        let diferencaParaSegunda;
+            if (diaSemana === 0) {
+                diferencaParaSegunda = 1; // domingo → amanhã já é segunda
+            } else if (diaSemana === 6) {
+                diferencaParaSegunda = 2; // sábado → depois de amanhã é segunda
+            } else {
+                diferencaParaSegunda = 1 - diaSemana; // dia de semana normal, segunda dessa mesma semana
+            }
 
         const inicioSemana = new Date (hoje);
         inicioSemana.setDate(hoje.getDate() + diferencaParaSegunda);
