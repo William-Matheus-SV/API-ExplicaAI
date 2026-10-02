@@ -55,7 +55,7 @@ const usuarioSchema = new mongoose.Schema({
     fotoPerfil: {
     type: String,
     default: null
-    }, // parte da foto de perfilvdi aluno
+    }, // parte da foto de perfil do aluno
 
     senha: {
         type: String,
